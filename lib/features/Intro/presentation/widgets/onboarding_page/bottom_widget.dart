@@ -41,7 +41,7 @@ class BottomWidget extends StatelessWidget {
             ),
             GestureDetector(
                 onTap: () {
-                  context.go('auth/presentation/pages/login_page');
+                  context.go('/login_page');
                 },
                 child: Container(
                     padding: EdgeInsets.symmetric(

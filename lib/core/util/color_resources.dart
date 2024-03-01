@@ -9,4 +9,5 @@ class ColorResources {
   static const Color TEXT_PRIMARY_COLOR = Color(0xffffffff);
   static const Color TEXT_SECONDARY_COLOR = Color(0xff555555);
   static const Color TEXT_SECONDARY_DARK_COLOR = Color(0xff333333);
+  static const Color BACKGROUND_LIGHT = Color(0xffF1F1F1);
 }

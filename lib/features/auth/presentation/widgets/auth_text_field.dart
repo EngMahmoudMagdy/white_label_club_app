@@ -1,4 +1,5 @@
 import 'package:clean_architecture/core/util/color_resources.dart';
+import 'package:clean_architecture/core/util/size_config.dart';
 import 'package:flutter/material.dart';
 
 class AuthTextField extends StatelessWidget {
@@ -20,6 +21,7 @@ class AuthTextField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
           label,
@@ -28,8 +30,8 @@ class AuthTextField extends StatelessWidget {
             fontSize: 16,
           ),
         ),
-        const SizedBox(
-          height: 8,
+        SizedBox(
+          height: getProportionateScreenHeight(8),
         ),
         Container(
           decoration: const BoxDecoration(

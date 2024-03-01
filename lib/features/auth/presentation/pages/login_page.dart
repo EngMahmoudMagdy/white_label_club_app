@@ -1,6 +1,12 @@
 import 'package:clean_architecture/core/util/color_resources.dart';
+import 'package:clean_architecture/core/util/images_paths.dart';
+import 'package:clean_architecture/core/util/size_config.dart';
 import 'package:clean_architecture/features/auth/presentation/widgets/auth_text_field.dart';
+import 'package:easy_localization/easy_localization.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
+import 'package:go_router/go_router.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -19,145 +25,160 @@ class _LoginPageState extends State<LoginPage> {
   bool _passwordVisible = false;
 
   bool isLoading = false;
+  bool isValid = false;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: ColorResources.BACKGROUND_LIGHT,
         leading: IconButton(
-          icon: Image.asset('assets/images/back_arrow_blue.svg'),
+          icon: SvgPicture.asset(ImagesPaths.BACK_BLUE_IMAGE),
           onPressed: () {
-            Navigator.of(context).pop();
+            context.pop();
           },
         ),
       ),
-      body: SingleChildScrollView(
-        child: Form(
-          key: _formKey,
-          child: Column(
-            children: [
-              const SizedBox(
-                height: 16,
-              ),
-              Image.asset('assets/images/logo_blue.svg'),
-              const SizedBox(
-                height: 40,
-              ),
-              const Text(
-                'Let’s get started',
-                style: TextStyle(
-                  color: ColorResources.PRIMARY_COLOR,
-                  fontSize: 40,
+      body: Container(
+        color: ColorResources.BACKGROUND_LIGHT,
+        padding: EdgeInsets.all(getProportionateScreenHeight(16)),
+        child: SingleChildScrollView(
+          child: Form(
+            key: _formKey,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                SizedBox(
+                  height: getProportionateScreenHeight(16),
                 ),
-              ),
-              const SizedBox(
-                height: 20,
-              ),
-              const Text(
-                'Enter your email address to continue.',
-                style: TextStyle(
-                  color: ColorResources.TEXT_SECONDARY_COLOR,
-                  fontSize: 16,
+                SvgPicture.asset(ImagesPaths.LOGO_BLUE_IMAGE),
+                SizedBox(
+                  height: getProportionateScreenHeight(40),
                 ),
-              ),
-              const SizedBox(
-                height: 40,
-              ),
-              AuthTextField(
-                label: 'Email Address',
-                hint: 'Enter your email address',
-                fieldController: emailController,
-                onFieldSubmitted: (_) => FocusScope.of(context).nextFocus(),
-                fieldValidator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Please enter an Email';
-                  }
-                  return null;
-                },
-              ),
-              TextFormField(
-                textInputAction: TextInputAction.done,
-                keyboardType: TextInputType.visiblePassword,
-                obscureText: !_passwordVisible,
-                decoration: InputDecoration(
-                  suffixIcon: IconButton(
-                      onPressed: () {
-                        setState(() {
-                          _passwordVisible = !_passwordVisible;
-                        });
-                      },
-                      icon: Icon(_passwordVisible
-                          ? Icons.visibility_off
-                          : Icons.visibility)),
-                  hintText: 'Enter your password',
-                ),
-                controller: passwordController,
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Please enter Password';
-                  }
-                  return null;
-                },
-                onFieldSubmitted: isLoading
-                    ? null
-                    : (value) {
-                        _onLoginClicked();
-                      },
-              ),
-              const SizedBox(
-                height: 12,
-              ),
-              TextButton(
-                onPressed: _onForgetPasswordClick,
-                child: const Text(
-                  'Forgot your password?',
-                  style: TextStyle(
+                Text(
+                  ('lets_get_started').tr(),
+                  style: const TextStyle(
                     color: ColorResources.PRIMARY_COLOR,
-                    fontSize: 14,
+                    fontSize: 40,
                   ),
                 ),
-              ),
-              const SizedBox(
-                height: 30,
-              ),
-              ElevatedButton(
-                onPressed: _onLoginClicked,
-                child: TextButton(
+                SizedBox(
+                  height: getProportionateScreenHeight(20),
+                ),
+                Text(
+                  'email_address_header'.tr(),
+                  style: const TextStyle(
+                    color: ColorResources.TEXT_SECONDARY_COLOR,
+                    fontSize: 16,
+                  ),
+                ),
+                SizedBox(
+                  height: getProportionateScreenHeight(40),
+                ),
+                AuthTextField(
+                  label: 'email_label'.tr(),
+                  hint: 'email_hint'.tr(),
+                  fieldController: emailController,
+                  onFieldSubmitted: (_) => FocusScope.of(context).nextFocus(),
+                  fieldValidator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'email_error'.tr();
+                    }
+                    return null;
+                  },
+                ),
+                SizedBox(
+                  height: getProportionateScreenHeight(16),
+                ),
+                TextFormField(
+                  textInputAction: TextInputAction.done,
+                  keyboardType: TextInputType.visiblePassword,
+                  obscureText: !_passwordVisible,
+                  decoration: InputDecoration(
+                    suffixIcon: IconButton(
+                        onPressed: () {
+                          setState(() {
+                            _passwordVisible = !_passwordVisible;
+                          });
+                        },
+                        icon: Icon(_passwordVisible
+                            ? Icons.visibility_off
+                            : Icons.visibility)),
+                    hintText: 'password_hint'.tr(),
+                  ),
+                  controller: passwordController,
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'password_error'.tr();
+                    }
+                    return null;
+                  },
+                  onFieldSubmitted: isLoading || !isValid
+                      ? null
+                      : (value) {
+                          _onLoginClicked();
+                        },
+                ),
+                SizedBox(
+                  height: getProportionateScreenHeight(12),
+                ),
+                TextButton(
                   onPressed: _onForgetPasswordClick,
                   child: const Text(
-                    'Login',
+                    'Forgot your password?',
                     style: TextStyle(
-                      color: ColorResources.TEXT_PRIMARY_COLOR,
+                      color: ColorResources.PRIMARY_COLOR,
                       fontSize: 14,
                     ),
                   ),
                 ),
-              ),
-              const SizedBox(
-                height: 30,
-              ),
-              Row(
-                children: [
-                  const Text(
-                    'Not registered yet?',
-                    style: TextStyle(
-                      color: ColorResources.TEXT_SECONDARY_DARK_COLOR,
-                      fontSize: 14,
+                SizedBox(
+                  height: getProportionateScreenHeight(30),
+                ),
+                SizedBox(
+                  width: double.infinity,
+                  child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor:
+                          Theme.of(context).primaryColor, // Set primary color
                     ),
-                  ),
-                  TextButton(
-                    onPressed: _onCreateAnAccountClick,
+                    onPressed: isLoading || !isValid ? null : _onLoginClicked,
                     child: const Text(
-                      'Create an Account',
+                      'Login',
                       style: TextStyle(
-                        color: ColorResources.PRIMARY_COLOR,
+                        color: ColorResources.TEXT_PRIMARY_COLOR,
                         fontSize: 14,
                       ),
                     ),
                   ),
-                ],
-              )
-            ],
+                ),
+                SizedBox(
+                  height: getProportionateScreenHeight(30),
+                ),
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    const Text(
+                      'Not registered yet?',
+                      style: TextStyle(
+                        color: ColorResources.TEXT_SECONDARY_DARK_COLOR,
+                        fontSize: 14,
+                      ),
+                    ),
+                    TextButton(
+                      onPressed: _onCreateAnAccountClick,
+                      child: const Text(
+                        'Create an Account',
+                        style: TextStyle(
+                          color: ColorResources.PRIMARY_COLOR,
+                          fontSize: 14,
+                        ),
+                      ),
+                    ),
+                  ],
+                )
+              ],
+            ),
           ),
         ),
       ),

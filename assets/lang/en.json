@@ -2,5 +2,13 @@
   "App Name" : "AL Ahly Club",
   "onboarding_title": "Welcome Back",
   "onboarding_text": "All football teams and fans are ready \n to participate in the most thrilling \n sports event of the year, which will \n be hosted in Qatar this year.",
-  "get_started" : "Get Started"
+  "get_started" : "Get Started",
+  "lets_get_started": "Let’s get started",
+  "email_address_header": "Enter your email address to continue.",
+  "email_label": "Email Address",
+  "email_hint": "Enter your email address",
+  "email_error": "Please enter an Email",
+  "password_label": "Enter your password",
+  "password_hint" : "Enter your password",
+  "password_error": "Please enter Password"
 }
