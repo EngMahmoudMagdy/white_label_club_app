@@ -1,5 +1,6 @@
-import 'package:flutter/material.dart';
 import 'package:easy_localization/easy_localization.dart';
+import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 import '../../../../../core/util/color_resources.dart';
 import '../../../../../core/util/size_config.dart';
@@ -39,7 +40,9 @@ class BottomWidget extends StatelessWidget {
               height: getProportionateScreenHeight(40),
             ),
             GestureDetector(
-                onTap: () {},
+                onTap: () {
+                  context.go('auth/presentation/pages/login_page');
+                },
                 child: Container(
                     padding: EdgeInsets.symmetric(
                         horizontal: getProportionateScreenWidth(30),
