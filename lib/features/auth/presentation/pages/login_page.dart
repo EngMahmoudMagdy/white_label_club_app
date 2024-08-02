@@ -3,7 +3,6 @@ import 'package:clean_architecture/core/util/images_paths.dart';
 import 'package:clean_architecture/core/util/size_config.dart';
 import 'package:clean_architecture/features/auth/presentation/widgets/auth_text_field.dart';
 import 'package:easy_localization/easy_localization.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:go_router/go_router.dart';
@@ -41,7 +40,7 @@ class _LoginPageState extends State<LoginPage> {
       ),
       body: Container(
         color: ColorResources.BACKGROUND_LIGHT,
-        padding: EdgeInsets.all(getProportionateScreenHeight(16)),
+        padding: EdgeInsets.all(getProportionateScreenHeight(28)),
         child: SingleChildScrollView(
           child: Form(
             key: _formKey,
@@ -49,38 +48,41 @@ class _LoginPageState extends State<LoginPage> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 SizedBox(
-                  height: getProportionateScreenHeight(16),
+                  height: getProportionateScreenHeight(12),
                 ),
                 SvgPicture.asset(ImagesPaths.LOGO_BLUE_IMAGE),
                 SizedBox(
-                  height: getProportionateScreenHeight(40),
+                  height: getProportionateScreenHeight(32),
                 ),
                 Text(
                   ('lets_get_started').tr(),
                   style: const TextStyle(
+                    letterSpacing: -3,
                     color: ColorResources.PRIMARY_COLOR,
                     fontSize: 40,
+                    fontWeight: FontWeight.w700,
                   ),
                 ),
                 SizedBox(
-                  height: getProportionateScreenHeight(20),
+                  height: getProportionateScreenHeight(14),
                 ),
                 Text(
                   'email_address_header'.tr(),
                   style: const TextStyle(
-                    color: ColorResources.TEXT_SECONDARY_COLOR,
-                    fontSize: 16,
-                  ),
+                      color: ColorResources.TEXT_SECONDARY_COLOR,
+                      fontSize: 16,
+                      fontWeight: FontWeight.w500),
                 ),
                 SizedBox(
-                  height: getProportionateScreenHeight(40),
+                  height: getProportionateScreenHeight(36),
                 ),
                 AuthTextField(
+                  keyboardType: TextInputType.emailAddress,
                   label: 'email_label'.tr(),
                   hint: 'email_hint'.tr(),
-                  fieldController: emailController,
+                  controller: emailController,
                   onFieldSubmitted: (_) => FocusScope.of(context).nextFocus(),
-                  fieldValidator: (value) {
+                  validator: (value) {
                     if (value == null || value.isEmpty) {
                       return 'email_error'.tr();
                     }
@@ -88,24 +90,23 @@ class _LoginPageState extends State<LoginPage> {
                   },
                 ),
                 SizedBox(
-                  height: getProportionateScreenHeight(16),
+                  height: getProportionateScreenHeight(12),
                 ),
-                TextFormField(
+                AuthTextField(
                   textInputAction: TextInputAction.done,
                   keyboardType: TextInputType.visiblePassword,
                   obscureText: !_passwordVisible,
-                  decoration: InputDecoration(
-                    suffixIcon: IconButton(
-                        onPressed: () {
-                          setState(() {
-                            _passwordVisible = !_passwordVisible;
-                          });
-                        },
-                        icon: Icon(_passwordVisible
-                            ? Icons.visibility_off
-                            : Icons.visibility)),
-                    hintText: 'password_hint'.tr(),
-                  ),
+                  suffixIcon: IconButton(
+                      onPressed: () {
+                        setState(() {
+                          _passwordVisible = !_passwordVisible;
+                        });
+                      },
+                      icon: Icon(_passwordVisible
+                          ? Icons.visibility_off
+                          : Icons.visibility)),
+                  label: 'password_label'.tr(),
+                  hint: 'password_hint'.tr(),
                   controller: passwordController,
                   validator: (value) {
                     if (value == null || value.isEmpty) {
@@ -124,52 +125,122 @@ class _LoginPageState extends State<LoginPage> {
                 ),
                 TextButton(
                   onPressed: _onForgetPasswordClick,
-                  child: const Text(
-                    'Forgot your password?',
-                    style: TextStyle(
+                  child: Text(
+                    'forget_password'.tr(),
+                    style: const TextStyle(
                       color: ColorResources.PRIMARY_COLOR,
+                      fontSize: 14,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                ),
+                SizedBox(
+                  height: getProportionateScreenHeight(20),
+                ),
+                SizedBox(
+                  width: double.infinity,
+                  height: 48,
+                  child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Theme.of(context).primaryColor,
+                      shape: const RoundedRectangleBorder(
+                        borderRadius: BorderRadius.all(
+                          Radius.circular(10),
+                        ),
+                      ),
+                    ),
+                    onPressed: isLoading || !isValid ? null : _onLoginClicked,
+                    child: Text(
+                      'login'.tr(),
+                      style: const TextStyle(
+                          color: ColorResources.TEXT_PRIMARY_COLOR,
+                          fontSize: 14,
+                          fontWeight: FontWeight.w600),
+                    ),
+                  ),
+                ),
+                SizedBox(
+                  height: getProportionateScreenHeight(20),
+                ),
+                Center(
+                  child: Text(
+                    'continue_with'.tr(),
+                    style: const TextStyle(
+                      color: ColorResources.TEXT_SECONDARY_DISABLE_COLOR,
                       fontSize: 14,
                     ),
                   ),
                 ),
                 SizedBox(
-                  height: getProportionateScreenHeight(30),
+                  height: getProportionateScreenHeight(12),
                 ),
-                SizedBox(
-                  width: double.infinity,
-                  child: ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor:
-                          Theme.of(context).primaryColor, // Set primary color
-                    ),
-                    onPressed: isLoading || !isValid ? null : _onLoginClicked,
-                    child: const Text(
-                      'Login',
-                      style: TextStyle(
-                        color: ColorResources.TEXT_PRIMARY_COLOR,
-                        fontSize: 14,
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    SizedBox(
+                      width: 48,
+                      height: 48,
+                      child: FloatingActionButton(
+                        onPressed: _onFacebookClick,
+                        elevation: 0,
+                        shape: const CircleBorder(),
+                        backgroundColor: ColorResources.FACEBOOK_COLOR,
+                        child: SvgPicture.asset(ImagesPaths.FACEBOOK_WHITE),
                       ),
                     ),
-                  ),
+                    SizedBox(
+                      width: 48,
+                      height: 48,
+                      child: FloatingActionButton(
+                        onPressed: _onFacebookClick,
+                        elevation: 0,
+                        shape: const CircleBorder(),
+                        backgroundColor: ColorResources.X_COLOR,
+                        child: SvgPicture.asset(ImagesPaths.X_WHITE),
+                      ),
+                    ),
+                    SizedBox(
+                      width: 48,
+                      height: 48,
+                      child: FloatingActionButton(
+                        onPressed: _onFacebookClick,
+                        elevation: 0,
+                        shape: const CircleBorder(),
+                        backgroundColor: ColorResources.GOOGLE_COLOR,
+                        child: SvgPicture.asset(ImagesPaths.GOOGLE_WHITE),
+                      ),
+                    ),
+                    SizedBox(
+                      width: 48,
+                      height: 48,
+                      child: FloatingActionButton(
+                        onPressed: _onFacebookClick,
+                        elevation: 0,
+                        shape: const CircleBorder(),
+                        backgroundColor: ColorResources.APPLE_COLOR,
+                        child: SvgPicture.asset(ImagesPaths.APPLE_WHITE),
+                      ),
+                    ),
+                  ],
                 ),
                 SizedBox(
-                  height: getProportionateScreenHeight(30),
+                  height: getProportionateScreenHeight(20),
                 ),
                 Row(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    const Text(
-                      'Not registered yet?',
-                      style: TextStyle(
+                    Text(
+                      'not_registered'.tr(),
+                      style: const TextStyle(
                         color: ColorResources.TEXT_SECONDARY_DARK_COLOR,
                         fontSize: 14,
                       ),
                     ),
                     TextButton(
                       onPressed: _onCreateAnAccountClick,
-                      child: const Text(
-                        'Create an Account',
-                        style: TextStyle(
+                      child: Text(
+                        'create_account'.tr(),
+                        style: const TextStyle(
                           color: ColorResources.PRIMARY_COLOR,
                           fontSize: 14,
                         ),
@@ -190,4 +261,6 @@ class _LoginPageState extends State<LoginPage> {
   void _onForgetPasswordClick() {}
 
   void _onCreateAnAccountClick() {}
+
+  void _onFacebookClick() {}
 }

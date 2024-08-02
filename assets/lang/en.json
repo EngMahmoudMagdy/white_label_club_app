@@ -8,7 +8,12 @@
   "email_label": "Email Address",
   "email_hint": "Enter your email address",
   "email_error": "Please enter an Email",
-  "password_label": "Enter your password",
+  "password_label": "Password",
   "password_hint" : "Enter your password",
-  "password_error": "Please enter Password"
+  "password_error": "Please enter Password",
+  "forget_password": "Forgot your password?",
+  "login": "Login",
+  "not_registered": "Not registered yet?",
+  "create_account": "Create an Account",
+  "continue_with": "Or Continue With"
 }

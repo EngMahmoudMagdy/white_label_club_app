@@ -8,6 +8,7 @@ final appTheme = ThemeData(
     backgroundColor: ColorResources.PRIMARY_COLOR,
     centerTitle: true
   ),
+  fontFamily: 'Poppins',
   brightness: Brightness.light,
   primaryColor: ColorResources.PRIMARY_COLOR,
   colorScheme: const ColorScheme.light(

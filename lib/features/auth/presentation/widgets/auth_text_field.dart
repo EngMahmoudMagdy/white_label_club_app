@@ -5,17 +5,28 @@ import 'package:flutter/material.dart';
 class AuthTextField extends StatelessWidget {
   final String label;
   final String hint;
-  final TextEditingController fieldController;
+  final TextEditingController controller;
   final void Function(String?)? onFieldSubmitted;
-  final String? Function(String?)? fieldValidator;
+  final String? Function(String?)? validator;
+
+  final TextInputType? keyboardType;
+  final TextInputAction? textInputAction;
+
+  final bool obscureText;
+
+  final Widget? suffixIcon;
 
   const AuthTextField({
     super.key,
     required this.label,
     required this.hint,
-    required this.fieldController,
+    required this.controller,
     this.onFieldSubmitted,
-    this.fieldValidator,
+    this.validator,
+    this.keyboardType,
+    this.textInputAction,
+    this.obscureText = false,
+    this.suffixIcon,
   });
 
   @override
@@ -26,8 +37,9 @@ class AuthTextField extends StatelessWidget {
         Text(
           label,
           style: const TextStyle(
-            color: ColorResources.TEXT_SECONDARY_COLOR,
-            fontSize: 16,
+            color: ColorResources.TEXT_SECONDARY_DARK_COLOR,
+            fontSize: 14,
+            fontWeight: FontWeight.w500,
           ),
         ),
         SizedBox(
@@ -35,19 +47,31 @@ class AuthTextField extends StatelessWidget {
         ),
         Container(
           decoration: const BoxDecoration(
+            color: Colors.white,
             borderRadius: BorderRadius.all(
               Radius.circular(10),
             ),
           ),
           child: TextFormField(
+            textInputAction: textInputAction,
+            obscureText: obscureText,
             decoration: InputDecoration(
+              suffixIcon: suffixIcon,
               hintText: hint,
-              border: InputBorder.none,
+              enabledBorder: const OutlineInputBorder(
+                borderSide: BorderSide(color: ColorResources.TEXT_PRIMARY_COLOR),
+                gapPadding: 10,
+                borderRadius: BorderRadius.all(Radius.circular(10)),
+              ),
+              hintStyle: const TextStyle(
+                color: ColorResources.HINT_TEXT_COLOR,
+                fontSize: 14,
+              ),
             ),
-            keyboardType: TextInputType.emailAddress,
-            controller: fieldController,
+            keyboardType: keyboardType,
+            controller: controller,
             onFieldSubmitted: onFieldSubmitted,
-            validator: fieldValidator,
+            validator: validator,
           ),
         ),
       ],
